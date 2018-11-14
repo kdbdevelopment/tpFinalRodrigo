@@ -186,7 +186,7 @@ public class DescartesDeTallado implements Serializable {
         changeSupport.firePropertyChange("dtaojo", oldDtaojo, dtaojo);
     }
 
-    public int getDtacant() {
+    public Integer getDtacant() {
         return dtacant;
     }
 

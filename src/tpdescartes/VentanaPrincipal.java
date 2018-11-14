@@ -7,6 +7,13 @@ package tpdescartes;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -19,6 +26,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      */
     public VentanaPrincipal() {
         initComponents();
+        //jTableBase.setVisible(false);
+       // jScrollPane2.setVisible(false);
     }
 
     /**
@@ -85,6 +94,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         botonAlta = new javax.swing.JButton();
         botonModificar = new javax.swing.JButton();
         botonEliminar = new javax.swing.JButton();
+        jTextFieldBuscarXNombre = new javax.swing.JTextField();
+        jButtonBuscarXNombre = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTableBase = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuImportar = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -307,19 +320,20 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                             .addGroup(dialogoModificarLayout.createSequentialGroup()
                                 .addGroup(dialogoModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(dialogoModificarLayout.createSequentialGroup()
-                                        .addComponent(Material1, 0, 89, Short.MAX_VALUE)
-                                        .addGap(42, 42, 42))
-                                    .addGroup(dialogoModificarLayout.createSequentialGroup()
                                         .addGroup(dialogoModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(NumDeTrab1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(Tratamiento1, 0, 86, Short.MAX_VALUE)
                                             .addComponent(Color1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(dialogoModificarLayout.createSequentialGroup()
+                                        .addGroup(dialogoModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(NumDeTrab1, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(Material1, 0, 89, Short.MAX_VALUE))
+                                        .addGap(42, 42, 42)))
                                 .addGroup(dialogoModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel17)
                                     .addComponent(jLabel15)
-                                    .addComponent(jLabel18)))
+                                    .addComponent(jLabel18)
+                                    .addComponent(jLabel16)))
                             .addGroup(dialogoModificarLayout.createSequentialGroup()
                                 .addComponent(Base1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -462,30 +476,66 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jButtonBuscarXNombre.setText("Buscar Motivo");
+        jButtonBuscarXNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBuscarXNombreActionPerformed(evt);
+            }
+        });
+
+        jTableBase.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTableBase);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(botonAlta, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
-                .addComponent(botonModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(94, 94, 94)
-                .addComponent(botonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jTextFieldBuscarXNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                .addGap(89, 89, 89)
+                                .addComponent(botonAlta, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(41, 41, 41)
+                                .addComponent(botonModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(29, 29, 29)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(botonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonBuscarXNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botonAlta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(botonModificar)
+                    .addComponent(botonEliminar))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(botonModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(botonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(botonAlta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldBuscarXNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonBuscarXNombre))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -536,23 +586,25 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         int resultadoExportar = this.dialogoExportar.showSaveDialog(jPanel3);
         
         if (resultadoExportar == JFileChooser.APPROVE_OPTION){
-            
+            Utilidades.exportar(this.dialogoExportar.getSelectedFile(), descartesDeTalladoQuery);
         } else {
         
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        int resultadoExportar = this.dialogoImportar.showOpenDialog(jPanel3);
+        int resultadoImportar = this.dialogoImportar.showOpenDialog(jPanel3);
         
-        if (resultadoExportar == JFileChooser.APPROVE_OPTION){
-            
+        if (resultadoImportar == JFileChooser.APPROVE_OPTION){
+            Utilidades.importar(this.dialogoImportar.getSelectedFile(), entityManager);
+            descartesDeTalladoList.clear();
+            descartesDeTalladoList.addAll(descartesDeTalladoQuery.getResultList());
         } else {
         
         }    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void botonEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEliminarMouseClicked
-        int resultado = JOptionPane.showConfirmDialog(rootPane, "Desea eliminar?", "kjhljk", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        int resultado = JOptionPane.showConfirmDialog(rootPane, "Desea eliminar?", "Eliminar registro", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (resultado == JOptionPane.YES_OPTION){
           Integer id = Integer.parseInt(idMod.getText());
           DescartesDeTallado descarteBaja = entityManager.find(DescartesDeTallado.class, id);
@@ -645,8 +697,63 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonEliminarActionPerformed
 
     private void NumDeTrabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NumDeTrabActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:jTextFieldBuscarXNombre
     }//GEN-LAST:event_NumDeTrabActionPerformed
+
+    private void jButtonBuscarXNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarXNombreActionPerformed
+
+        
+                 String[] campos = new String[10];
+        modelo = new DefaultTableModel(null,campos);
+        
+        try {
+            String[] registros = new String[10];
+            Statement stmt = this.conectar().createStatement();
+            ResultSet consulta = stmt.executeQuery("SELECT * FROM descartes_de_tallado" + " where Dta_motivo like '%" + jTextFieldBuscarXNombre.getText()  + "%';");
+            
+            while (consulta.next()) {
+                registros[0] = consulta.getString(1);
+                System.out.println(consulta.getString(1));
+                registros[1] = consulta.getString(2);
+                
+                registros[2] = consulta.getString(3);
+                registros[3] = consulta.getString(4);
+                registros[4] = consulta.getString(5);
+                registros[5] = consulta.getString(6);
+                registros[6] = consulta.getString(7);
+                registros[7] = consulta.getString(8);
+                registros[8] = consulta.getString(9);
+                registros[9] = consulta.getString(10);
+
+                modelo.addRow(registros);
+                
+            }
+            
+            ResultSetMetaData metadata = consulta.getMetaData();
+            campos [0] = metadata.getColumnLabel(1);
+            campos [1] = metadata.getColumnLabel(2);
+            campos [2] = metadata.getColumnLabel(3);
+            campos [3] = metadata.getColumnLabel(4);
+            campos [4] = metadata.getColumnLabel(5);
+            campos [5] = metadata.getColumnLabel(6);
+            campos [6] = metadata.getColumnLabel(7);
+            campos [7] = metadata.getColumnLabel(8);
+            campos [8] = metadata.getColumnLabel(9);
+            campos [9] = metadata.getColumnLabel(10);
+
+            
+            modelo.setColumnIdentifiers(campos);
+            
+            
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            
+        }
+        
+        jTableBase.setModel(modelo);
+        
+    
+    }//GEN-LAST:event_jButtonBuscarXNombreActionPerformed
 
     /**
      * @param args the command line arguments
@@ -682,6 +789,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
     }
+    
+     private Connection conectar() {
+        Connection conec = null;
+        try {
+            conec = DriverManager.getConnection("jdbc:mysql://localhost/descartes", "root", "");
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return conec;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> Base;
@@ -715,6 +832,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JDialog dialogoModificar;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JTextField idMod;
+    private javax.swing.JButton jButtonBuscarXNombre;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -739,10 +857,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTableBase;
+    private javax.swing.JTextField jTextFieldBuscarXNombre;
     private javax.swing.JMenu menuExportar;
     private javax.swing.JMenu menuImportar;
     private javax.swing.JTabbedPane pestaTallado;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
+    DefaultTableModel modelo;
 }
